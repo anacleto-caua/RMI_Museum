@@ -2,6 +2,7 @@ package org.test;// RMIDemoRunner.java
 
 import org.client.ClientVideoService;
 import org.host.servicevideo.HostVideoService;
+import org.video_player.VideoPlayerApp;
 
 /**
  * This class is solely for the purpouse of TESTING,
@@ -9,6 +10,10 @@ import org.host.servicevideo.HostVideoService;
  */
 public class RMIDemoRunner {
     public static void main(String[] args) {
+
+        VideoPlayerApp videoPlayerApp = new VideoPlayerApp();
+
+        VideoPlayerApp.main(args);
 
         // Create and start the ServiceHost in a new thread
         Thread serverThread = new Thread(() -> {
