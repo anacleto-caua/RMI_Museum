@@ -8,7 +8,7 @@ public class RemoteServiceImpl extends UnicastRemoteObject implements RemoteServ
 
     String name;
 
-    RemoteServiceImpl(String name) throws RemoteException {
+    public RemoteServiceImpl(String name) throws RemoteException {
         super();
         this.name = name;
     }
