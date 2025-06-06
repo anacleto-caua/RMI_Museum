@@ -1,7 +1,7 @@
 package org.test;// RMIDemoRunner.java
 
-import org.client.ServiceClient;
-import org.host.base.ServiceHost;
+import org.client.ClientVideoService;
+import org.host.servicevideo.HostVideoService;
 
 /**
  * This class is solely for the purpouse of TESTING,
@@ -9,10 +9,11 @@ import org.host.base.ServiceHost;
  */
 public class RMIDemoRunner {
     public static void main(String[] args) {
+
         // Create and start the ServiceHost in a new thread
         Thread serverThread = new Thread(() -> {
             System.out.println("Starting RMI ServiceHost in a separate thread...");
-            ServiceHost host = new ServiceHost("host1" , 1099);
+            HostVideoService host = new HostVideoService("host1" , "localhost",  1099, "VideoService");
             host.startHost();
         });
         serverThread.start();
@@ -28,8 +29,8 @@ public class RMIDemoRunner {
 
         // Now, execute the ServiceClient
         System.out.println("Executing RMI ServiceClient...");
-        ServiceClient client = new ServiceClient();
-        client.startClient(); // Call the main method of ServiceClient
+        ClientVideoService client = new ClientVideoService();
+        client.startClient("localhost",  1099, "VideoService"); // Call the main method of ServiceClient
 
         System.out.println("RMI Demo Runner finished!");
     }
