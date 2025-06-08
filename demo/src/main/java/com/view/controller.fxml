@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" 
+            stylesheets="@style/styleController.css" styleClass="main-container">
+    
+    <Pane styleClass="science-particle-1" AnchorPane.topAnchor="60" AnchorPane.rightAnchor="100" />
+    <Pane styleClass="science-particle-2" AnchorPane.bottomAnchor="120" AnchorPane.leftAnchor="80" />
+    <Pane styleClass="science-particle-3" AnchorPane.topAnchor="200" AnchorPane.leftAnchor="150" />
+    <Pane styleClass="floating-molecule" AnchorPane.topAnchor="30" AnchorPane.leftAnchor="30" />
+    <Pane styleClass="floating-molecule" AnchorPane.bottomAnchor="40" AnchorPane.rightAnchor="60" />
+    <Pane styleClass="floating-molecule" AnchorPane.topAnchor="180" AnchorPane.rightAnchor="200" />
+    
+    <VBox alignment="CENTER" spacing="0" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" 
+          AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+        
+        <VBox alignment="CENTER" spacing="15" styleClass="header-section">
+            <HBox alignment="CENTER" spacing="15">
+                <Label styleClass="science-icon" text="🔬" />
+                <Label styleClass="control-title" text="SCIENCE CONTROL" />
+            </HBox>
+            <Label styleClass="control-subtitle" text="Centro de Comando das Estações Científicas Interativas" />
+            <Pane styleClass="tech-line" />
+        </VBox>
+        
+        <HBox spacing="40" alignment="CENTER" VBox.vgrow="ALWAYS">
+            
+            <VBox spacing="25" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                <Label text="ESTAÇÕES DISPONÍVEIS" 
+                       style="-fx-font-size: 18px; -fx-font-weight: 700; -fx-text-fill: #00d2ff; -fx-letter-spacing: 1px;" />
+                
+                <GridPane hgap="20" vgap="20" alignment="CENTER" styleClass="stations-grid">
+                    
+                    <VBox fx:id="station1Card" spacing="15" alignment="CENTER" styleClass="station-card" 
+                          GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label styleClass="station-icon" text="⚡" />
+                        <Label styleClass="station-title" text="FÍSICA EXPERIMENTAL" />
+                        <Label styleClass="station-description" 
+                               text="Simulador de terremotos, gerador de ondas e experimentos eletromagnéticos" />
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label fx:id="station1Status" styleClass="station-status online" text="● ONLINE" />
+                            <HBox styleClass="connection-indicator" spacing="6" alignment="CENTER">
+                                <Pane styleClass="connection-dot connected" />
+                                <Label styleClass="connection-text" text="192.168.1.101" />
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                    
+                    <VBox fx:id="station2Card" spacing="15" alignment="CENTER" styleClass="station-card" 
+                          GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label styleClass="station-icon" text="🤖" />
+                        <Label styleClass="station-title" text="ROBÓTICA AVANÇADA" />
+                        <Label styleClass="station-description" 
+                               text="Braço robótico, sensores inteligentes e automação industrial" />
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label fx:id="station2Status" styleClass="station-status online" text="● ONLINE" />
+                            <HBox styleClass="connection-indicator" spacing="6" alignment="CENTER">
+                                <Pane styleClass="connection-dot connected" />
+                                <Label styleClass="connection-text" text="192.168.1.102" />
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                    
+                    <VBox fx:id="station3Card" spacing="15" alignment="CENTER" styleClass="station-card" 
+                          GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label styleClass="station-icon" text="🧪" />
+                        <Label styleClass="station-title" text="QUÍMICA INTERATIVA" />
+                        <Label styleClass="station-description" 
+                               text="Reações visuais, análise espectral e simulações moleculares" />
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label fx:id="station3Status" styleClass="station-status offline" text="● OFFLINE" />
+                            <HBox styleClass="connection-indicator" spacing="6" alignment="CENTER">
+                                <Pane styleClass="connection-dot disconnected" />
+                                <Label styleClass="connection-text" text="192.168.1.103" />
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                    
+                    <VBox fx:id="station4Card" spacing="15" alignment="CENTER" styleClass="station-card" 
+                          GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label styleClass="station-icon" text="🌌" />
+                        <Label styleClass="station-title" text="ASTRONOMIA DIGITAL" />
+                        <Label styleClass="station-description" 
+                               text="Planetário virtual, simulação espacial e observação remota" />
+                        <HBox spacing="10" alignment="CENTER">
+                            <Label fx:id="station4Status" styleClass="station-status online" text="● ONLINE" />
+                            <HBox styleClass="connection-indicator" spacing="6" alignment="CENTER">
+                                <Pane styleClass="connection-dot connected" />
+                                <Label styleClass="connection-text" text="192.168.1.104" />
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                    
+                </GridPane>
+            </VBox>
+            
+            <VBox spacing="0" alignment="TOP_CENTER" prefWidth="400" HBox.hgrow="NEVER">
+                
+                <VBox styleClass="control-panel" alignment="CENTER">
+                    <Label fx:id="controlHeader" styleClass="control-header" text="SELECIONE UMA ESTAÇÃO" />
+                    <Label fx:id="controlSubtitle" styleClass="control-subtitle-panel" 
+                           text="Escolha uma estação para ver as ações disponíveis" />
+                    
+                    <VBox fx:id="actionsContainer" spacing="15" alignment="CENTER">
+                        <Label text="⚠️ Nenhuma estação selecionada" 
+                               style="-fx-font-size: 16px; -fx-text-fill: #71717a; -fx-font-style: italic;" />
+                    </VBox>
+                </VBox>
+                
+                <VBox styleClass="status-panel" spacing="12" alignment="CENTER">
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label fx:id="statusIndicator" styleClass="status-indicator" text="💭" />
+                        <Label fx:id="statusMessage" styleClass="status-message" 
+                               text="Sistema pronto para operação" />
+                    </HBox>
+                    <ProgressBar fx:id="actionProgress" prefWidth="300" styleClass="science-progress" 
+                                 visible="false" />
+                </VBox>
+                
+                <VBox styleClass="emergency-section" spacing="15" alignment="CENTER">
+                    <Label styleClass="emergency-text" text="CONTROLE DE EMERGÊNCIA" />
+                    <Button fx:id="emergencyButton" styleClass="emergency-button">
+                        <graphic>
+                            <Label text="🛑" style="-fx-font-size: 24px; -fx-text-fill: white;" />
+                        </graphic>
+                    </Button>
+                    <Label styleClass="emergency-text" text="PARAR TODAS AS ESTAÇÕES" 
+                           style="-fx-font-size: 12px;" />
+                </VBox>
+                
+            </VBox>
+        </HBox>
+    </VBox>
+</AnchorPane>

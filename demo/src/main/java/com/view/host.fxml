@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" 
+            stylesheets="@style/styleHost.css" styleClass="main-container" fx:controller="com.controller.CreateHost">
+    
+    <Pane styleClass="glow-orb-1" AnchorPane.topAnchor="80" AnchorPane.rightAnchor="120" />
+    <Pane styleClass="glow-orb-2" AnchorPane.bottomAnchor="100" AnchorPane.leftAnchor="60" />
+    <Pane styleClass="glow-orb-3" AnchorPane.topAnchor="250" AnchorPane.leftAnchor="200" />
+    <Pane styleClass="floating-card" AnchorPane.topAnchor="40" AnchorPane.leftAnchor="40" />
+    <Pane styleClass="floating-card" AnchorPane.bottomAnchor="60" AnchorPane.rightAnchor="80" />
+    
+    <VBox alignment="CENTER" spacing="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" 
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        
+        <VBox alignment="CENTER" spacing="20" styleClass="header-section">
+            <HBox alignment="CENTER" spacing="12">
+                <Label styleClass="emoji-icon" text="🎬" />
+                <Label styleClass="brand-title" text="StreamSetup" />
+            </HBox>
+            <Label styleClass="brand-subtitle" text="configure seu servidor de vídeo de forma descomplicada ✨" />
+            <Pane styleClass="accent-line" />
+        </VBox>
+        
+        <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" maxWidth="650" spacing="40" styleClass="modern-card">
+                
+                <VBox spacing="32" styleClass="fields-container">
+                    
+                    <HBox spacing="24" alignment="CENTER">
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Label styleClass="field-emoji" text="📝" />
+                                <Label styleClass="field-title" text="Nome do Serviço" />
+                            </HBox>
+                            <TextField fx:id="nameField" promptText="ex: MeuStreamingShow" styleClass="modern-input" />
+                            <Label styleClass="field-tip" text="escolha um nome único e criativo!" />
+                        </VBox>
+                        
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Label styleClass="field-emoji" text="🌐" />
+                                <Label styleClass="field-title" text="Endereço Host" />
+                            </HBox>
+                            <TextField fx:id="hostField" promptText="localhost" styleClass="modern-input" text="localhost" />
+                            <Label styleClass="field-tip" text="onde seu servidor vai rodar" />
+                        </VBox>
+                    </HBox>
+                    
+                    <HBox spacing="24" alignment="CENTER">
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Label styleClass="field-emoji" text="🎯" />
+                                <Label styleClass="field-title" text="ID do Serviço" />
+                            </HBox>
+                            <TextField fx:id="serviceField" promptText="ex: VideoStreamRemoto" styleClass="modern-input" />
+                            <Label styleClass="field-tip" text="identificador técnico do RMI" />
+                        </VBox>
+                        
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Label styleClass="field-emoji" text="🚪" />
+                                <Label styleClass="field-title" text="Porta" />
+                            </HBox>
+                            <TextField fx:id="portField" promptText="1099" styleClass="modern-input" text="1099" />
+                            <Label styleClass="field-tip" text="porta padrão é 1099" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+                
+                <HBox alignment="CENTER" spacing="20" styleClass="action-zone">
+                    <Button fx:id="createButton" mnemonicParsing="false" styleClass="hero-button">
+                        <graphic>
+                            <HBox alignment="CENTER" spacing="10">
+                                <Label styleClass="button-emoji" text="🚀" />
+                                <Label styleClass="button-text" text="Criar Host" />
+                            </HBox>
+                        </graphic>
+                    </Button>
+                    
+                    <Button fx:id="clearButton" mnemonicParsing="false" styleClass="ghost-button">
+                        <graphic>
+                            <HBox alignment="CENTER" spacing="8">
+                                <Label styleClass="button-emoji-secondary" text="🗑️" />
+                                <Label styleClass="button-text-secondary" text="Limpar Tudo" />
+                            </HBox>
+                        </graphic>
+                    </Button>
+                </HBox>
+                
+                <VBox alignment="CENTER" spacing="16" styleClass="status-zone">
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label styleClass="status-emoji" text="💭" />
+                        <Label fx:id="statusLabel" styleClass="status-text" text="pronto para configurar seu stream!" />
+                    </HBox>
+                    <ProgressBar fx:id="progressBar" prefWidth="400" styleClass="modern-progress" visible="false" />
+                </VBox>
+                
+            </VBox>
+        </VBox>
+    </VBox>
+</AnchorPane>
