@@ -17,7 +17,6 @@ public class VideoServiceHost {
 
     public void startHost() {
         try {
-
             VideoServiceInterface serviceVideo = new VideoServiceImpl(name,mediaPlayer);
 
             String rmi = ("rmi://" + host + ":" + port + "/" + service);

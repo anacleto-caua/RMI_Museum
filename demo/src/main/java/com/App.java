@@ -7,6 +7,7 @@ import javafx.scene.*;
 import javafx.stage.*;
 
 import java.io.*;
+import java.rmi.Naming;
 
 import com.service.VideoServiceClient;
 
@@ -37,8 +38,23 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        //launch();
-         try {
+       launch(args);
+
+      /*    try {
+            String[] objetos = Naming.list("rmi://localhost:1099/");
+            System.out.println("Objetos registrados no RMI Registry:");
+
+            for (String obj : objetos) {
+                System.out.println(" - " + obj);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erro ao listar objetos: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        /* 
+        try {
             System.out.println("Waiting 2 seconds for ServiceHost to initialize...");
             Thread.sleep(2000); 
         } catch (InterruptedException e) {
@@ -49,5 +65,6 @@ public class App extends Application {
         int teste = 1;
         VideoServiceClient cliente = new VideoServiceClient("localhost", "ff", 1099);
         cliente.initService(teste);
+        */
     }
 }
