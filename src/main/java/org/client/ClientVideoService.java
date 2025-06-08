@@ -5,24 +5,19 @@ import org.host.servicevideo.RemoteServiceVideo;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
+import lombok.AllArgsConstructor;;
+
+@AllArgsConstructor
 public class ClientVideoService {
+    private String host;
+    private String serviceName;
+    private int port;
 
-    public void startClient(String host, int port, String serviceName) {
+    public void initService(int ctrl) {
         String rmi = "rmi://" + host + ":" + port + "/" + serviceName;
-
-        startClient(rmi);
-    }
-
-    public void startClient(String rmi) {
         try {
             RemoteServiceVideo service = (RemoteServiceVideo) Naming.lookup(rmi);
-            System.out.println("Client successfully looked up Services.");
-
-            // Auto tests a bunch of services....
-            service.PlayVideo();
-            service.StopVideo();
-            service.RestartVideo();
-
+            service.control(ctrl);          
         } catch (RemoteException e) {
             System.err.println("ServiceClient RemoteException: " + e.getMessage());
             e.printStackTrace();

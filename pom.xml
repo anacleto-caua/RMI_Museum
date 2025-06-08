@@ -9,24 +9,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source> <!-- Changed to a common JavaFX compatible version -->
-        <maven.compiler.target>17</maven.compiler.target> <!-- Changed to a common JavaFX compatible version -->
+        <maven.compiler.source>17</maven.compiler.source> 
+        <maven.compiler.target>17</maven.compiler.target> 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>22</javafx.version> <!-- Specify your JavaFX SDK version here -->
+        <javafx.version>22</javafx.version> 
     </properties>
 
     <dependencies>
-        <!-- This dependency seems to be a self-reference and is usually not needed.
-             If RMI_Museum is a separate module or project, it should be managed differently.
-             For a standalone video player, you can remove this.
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>RMI_Museum</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        -->
-
-        <!-- JavaFX dependencies for the video player -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -34,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId> <!-- Good practice to include for general JavaFX apps -->
+            <artifactId>javafx-fxml</artifactId> 
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
@@ -42,6 +31,14 @@
             <artifactId>javafx-media</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -49,7 +46,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version> <!-- Use a recent version -->
+                <version>3.11.0</version> 
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -58,17 +55,15 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version> <!-- Use a recent version -->
+                <version>0.0.8</version> 
                 <executions>
                     <execution>
-                        <!-- Default configuration for running the application -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>VideoPlayerApp</mainClass> <!-- No package prefix needed if class is in default package -->
+                            <mainClass>VideoPlayerApp</mainClass> 
                         </configuration>
                     </execution>
                     <execution>
-                        <!-- Configuration for creating native packages (optional) -->
                         <id>create-jlink-image</id>
                         <phase>package</phase>
                         <goals>

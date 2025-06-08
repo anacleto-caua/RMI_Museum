@@ -4,28 +4,40 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteVideoService extends UnicastRemoteObject implements RemoteServiceVideo {
+    private String name;
 
-    String name;
-
-    public RemoteVideoService(String name) throws RemoteException {
-        super();
-        this.name = name;
+    public RemoteVideoService(String nameService) throws RemoteException {
+        this.name = nameService;
 
         System.out.println("RemoteVideoService created: " + name);
     }
 
-    @Override
-    public void PlayVideo() throws RemoteException {
-        System.out.println("Server method: PlayVideo was called");
+    private void playVideo(){
+        System.out.println("Play video");
     }
 
-    @Override
-    public void StopVideo() throws RemoteException {
-        System.out.println("Server method: StopVideo was called");
+    private void stopVideo(){
+        System.out.println("Stop Video");
     }
 
-    @Override
-    public void RestartVideo() throws RemoteException {
-        System.out.println("Server method: RestartVideo was called");
+    private void restartVideo(){
+        System.out.println("Restar video");
+    }
+
+    @Override 
+    public void control(int ctrl) {
+        switch(ctrl) {
+            case 1:
+                playVideo();
+                break;
+            case 2:
+                stopVideo();
+                break;
+            case 3:
+                restartVideo();
+                break;
+            default:
+                System.out.println("Comando inválido.");
+        }
     }
 }
