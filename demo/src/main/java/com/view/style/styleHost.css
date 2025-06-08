@@ -131,16 +131,11 @@
     -fx-cursor: text;
 }
 
-.modern-input:focused {
+.modern-input:focused , .modern-input:hover{
     -fx-border-color: #8b5cf6;
     -fx-border-width: 2px;
     -fx-background-color: rgba(139, 92, 246, 0.08);
     -fx-effect: dropshadow(gaussian, rgba(139, 92, 246, 0.4), 12, 0, 0, 0);
-}
-
-.modern-input:hover {
-    -fx-border-color: rgba(255, 255, 255, 0.25);
-    -fx-background-color: rgba(255, 255, 255, 0.08);
 }
 
 .modern-input.error {

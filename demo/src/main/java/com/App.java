@@ -2,12 +2,11 @@ package com;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.*;
+import javafx.stage.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class App extends Application {
 
@@ -15,7 +14,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("src/main/java/com/view/host.fxml"), 640, 480);
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        double width = screenBounds.getWidth();
+        double height = screenBounds.getHeight();
+
+        scene = new Scene(loadFXML("src/main/java/com/view/host.fxml"), width, height);
         stage.setScene(scene);
         stage.show();
     }
@@ -23,7 +26,7 @@ public class App extends Application {
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
-    
+
 
     private static Parent loadFXML(String fxml) throws IOException {
         File fxmlFile = new File(fxml);
