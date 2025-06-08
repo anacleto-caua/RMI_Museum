@@ -2,26 +2,40 @@ package com.service;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import javafx.application.Platform;
+import javafx.scene.media.MediaPlayer;
 
 public class VideoServiceImpl extends UnicastRemoteObject implements VideoServiceInterface {
     private String name;
+    private MediaPlayer mediaPlayer;
 
-    public VideoServiceImpl(String nameService) throws RemoteException {
+    public VideoServiceImpl(String nameService, MediaPlayer mediaPlayer) throws RemoteException {
         this.name = nameService;
+        this.mediaPlayer = mediaPlayer;
 
         System.out.println("RemoteVideoService created: " + name);
     }
 
     private void playVideo(){
-        System.out.println("Play video");
+        Platform.runLater(() -> {
+            mediaPlayer.play();
+            System.out.println("Video started playing");
+        });
     }
 
     private void stopVideo(){
-        System.out.println("Stop Video");
+        Platform.runLater(() -> {
+            mediaPlayer.pause();
+            System.out.println("Video paused");
+        });
     }
 
     private void restartVideo(){
-        System.out.println("Restar video");
+        Platform.runLater(() -> {
+            mediaPlayer.seek(mediaPlayer.getStartTime());
+            mediaPlayer.play();
+            System.out.println("Video restarted");
+        });
     }
 
     @Override 

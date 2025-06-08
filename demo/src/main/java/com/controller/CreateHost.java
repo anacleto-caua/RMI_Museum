@@ -18,7 +18,7 @@ public class CreateHost {
     @FXML private TextField portField;
     @FXML private VBox vboxContainer;
     @FXML private MediaView mediaView;
-    
+
     @FXML
     public void createHost(){
         try{
@@ -40,13 +40,14 @@ public class CreateHost {
             System.out.println("Registry já estava rodando na porta " + host.getPort());
         }
 
-        initServiceVideo(host);
-
         initViewVideo();
+
+        initServiceVideo(host);
     }
 
     private void initServiceVideo(Host host){
-        VideoServiceHost serviceVideo = new VideoServiceHost(host.getName(), host.getHost(), host.getService(), host.getPort());
+        MediaPlayer mediaPlayer = mediaView.getMediaPlayer();
+        VideoServiceHost serviceVideo = new VideoServiceHost(host.getName(), host.getHost(), host.getService(), host.getPort(), mediaPlayer);
         serviceVideo.startHost();
     }
 
@@ -57,7 +58,7 @@ public class CreateHost {
         String videoUri = videoFile.toURI().toString();
         Media media = new Media(videoUri);
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaView = new MediaView(mediaPlayer);
 
         mediaView.setFitWidth(700);
         mediaView.setFitHeight(400);

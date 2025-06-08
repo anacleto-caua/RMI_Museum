@@ -8,6 +8,8 @@ import javafx.stage.*;
 
 import java.io.*;
 
+import com.service.VideoServiceClient;
+
 public class App extends Application {
 
     private static Scene scene;
@@ -35,6 +37,17 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        //launch();
+         try {
+            System.out.println("Waiting 2 seconds for ServiceHost to initialize...");
+            Thread.sleep(2000); 
+        } catch (InterruptedException e) {
+            System.err.println("Thread interrupted during sleep: " + e.getMessage());
+            Thread.currentThread().interrupt(); 
+        }
+
+        int teste = 1;
+        VideoServiceClient cliente = new VideoServiceClient("localhost", "ff", 1099);
+        cliente.initService(teste);
     }
 }
