@@ -17,6 +17,7 @@ public class VideoServiceHost {
 
     public void startHost() {
         try {
+            System.setProperty("java.rmi.servwe.hostname", host);
             VideoServiceInterface serviceVideo = new VideoServiceImpl(name,mediaPlayer);
 
             String rmi = ("rmi://" + host + ":" + port + "/" + service);

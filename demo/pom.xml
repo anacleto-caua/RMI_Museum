@@ -2,19 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.example</groupId>
     <artifactId>RMI_Museum</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    
     <properties>
-        <maven.compiler.source>17</maven.compiler.source> 
-        <maven.compiler.target>17</maven.compiler.target> 
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>22</javafx.version> 
+        <javafx.version>22</javafx.version>
+        <main.class>com.App</main.class>
+        <app.name>RMI-Museum</app.name>
+        <app.vendor>RMI Museum Team</app.vendor>
+        <jpackage.version>1.6.0</jpackage.version>
     </properties>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -23,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId> 
+            <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
@@ -31,78 +35,461 @@
             <artifactId>javafx-media</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
-
+    
     <build>
-        <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.11.0</version>
-            <configuration>
-                <source>${maven.compiler.source}</source>
-                <target>${maven.compiler.target}</target>
-                <annotationProcessorPaths>
-                    <path>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                        <version>1.18.30</version>
-                    </path>
-                </annotationProcessorPaths>
-            </configuration>
-        </plugin>
-
-        <plugin>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-maven-plugin</artifactId>
-            <version>0.0.8</version>
-            <configuration>
-                <mainClass>com.App</mainClass>
-            </configuration>
-        </plugin>
-
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.4.2</version>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>com.App</mainClass>
-                    </manifest>
-                </archive>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
-            </configuration>
-            <executions>
-                <execution>
-                    <id>make-assembly</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>single</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-
         <resources>
             <resource>
                 <directory>src/main/java/com</directory>
                 <includes>
                     <include>**/*.fxml</include>
                     <include>**/*.css</include>
+                    <include>**/*.png</include>
+                    <include>**/*.jpg</include>
+                    <include>**/*.jpeg</include>
+                    <include>**/*.gif</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
-    </resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            
+            <!-- JavaFX Maven Plugin -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                     <module>com</module>
+                </configuration>
+            </plugin>
+            
+            <!-- Maven Assembly Plugin para Fat JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <finalName>${app.name}-universal</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Maven Dependency Plugin para copiar dependências -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/lib</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
+    
+    <profiles>
+        <!-- Profile para macOS -->
+        <profile>
+            <id>macos</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <configuration>
+                            <name>${app.name}</name>
+                            <appVersion>${project.version}</appVersion>
+                            <vendor>${app.vendor}</vendor>
+                            <destination>target/dist-macos</destination>
+                            <input>target</input>
+                            <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                            <mainClass>${main.class}</mainClass>
+                            <type>DMG</type>
+                            <macPackageName>${app.name}</macPackageName>
+                            <macPackageIdentifier>org.example.rmimuseum</macPackageIdentifier>
+                            <description>RMI Museum - Interactive Museum Application</description>
+                            <javaOptions>
+                                <option>-Dfile.encoding=UTF-8</option>
+                            </javaOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>dmg</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Plugin adicional para criar .app também -->
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <executions>
+                            <execution>
+                                <id>app-image</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                                <configuration>
+                                    <name>${app.name}</name>
+                                    <appVersion>${project.version}</appVersion>
+                                    <vendor>${app.vendor}</vendor>
+                                    <destination>target/dist-macos-app</destination>
+                                    <input>target</input>
+                                    <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                                    <mainClass>${main.class}</mainClass>
+                                    <type>APP_IMAGE</type>
+                                    <macPackageName>${app.name}</macPackageName>
+                                    <macPackageIdentifier>org.example.rmimuseum</macPackageIdentifier>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Profile para Windows -->
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <configuration>
+                            <name>${app.name}</name>
+                            <appVersion>${project.version}</appVersion>
+                            <vendor>${app.vendor}</vendor>
+                            <destination>target/dist-windows</destination>
+                            <input>target</input>
+                            <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                            <mainClass>${main.class}</mainClass>
+                            <type>EXE</type>
+                            <winConsole>true</winConsole>
+                            <winDirChooser>true</winDirChooser>
+                            <winMenu>true</winMenu>
+                            <winShortcut>true</winShortcut>
+                            <description>RMI Museum - Interactive Museum Application</description>
+                            <javaOptions>
+                                <option>-Dfile.encoding=UTF-8</option>
+                            </javaOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>exe</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Plugin adicional para criar MSI -->
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <executions>
+                            <execution>
+                                <id>msi</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                                <configuration>
+                                    <name>${app.name}</name>
+                                    <appVersion>${project.version}</appVersion>
+                                    <vendor>${app.vendor}</vendor>
+                                    <destination>target/dist-windows-msi</destination>
+                                    <input>target</input>
+                                    <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                                    <mainClass>${main.class}</mainClass>
+                                    <type>MSI</type>
+                                    <winConsole>true</winConsole>
+                                    <winDirChooser>true</winDirChooser>
+                                    <winMenu>true</winMenu>
+                                    <winShortcut>true</winShortcut>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Profile para Linux -->
+        <profile>
+            <id>linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>!Mac OS X</name>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <configuration>
+                            <name>${app.name}</name>
+                            <appVersion>${project.version}</appVersion>
+                            <vendor>${app.vendor}</vendor>
+                            <destination>target/dist-linux</destination>
+                            <input>target</input>
+                            <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                            <mainClass>${main.class}</mainClass>
+                            <type>DEB</type>
+                            <description>RMI Museum - Interactive Museum Application</description>
+                            <linuxShortcut>true</linuxShortcut>
+                            <linuxMenuGroup>Education</linuxMenuGroup>
+                            <javaOptions>
+                                <option>-Dfile.encoding=UTF-8</option>
+                            </javaOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>deb</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Plugin adicional para criar RPM -->
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <executions>
+                            <execution>
+                                <id>rpm</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                                <configuration>
+                                    <name>${app.name}</name>
+                                    <appVersion>${project.version}</appVersion>
+                                    <vendor>${app.vendor}</vendor>
+                                    <destination>target/dist-linux-rpm</destination>
+                                    <input>target</input>
+                                    <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                                    <mainClass>${main.class}</mainClass>
+                                    <type>RPM</type>
+                                    <linuxShortcut>true</linuxShortcut>
+                                    <linuxMenuGroup>Education</linuxMenuGroup>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Plugin para AppImage -->
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <version>${jpackage.version}</version>
+                        <executions>
+                            <execution>
+                                <id>app-image-linux</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>jpackage</goal>
+                                </goals>
+                                <configuration>
+                                    <name>${app.name}</name>
+                                    <appVersion>${project.version}</appVersion>
+                                    <vendor>${app.vendor}</vendor>
+                                    <destination>target/dist-linux-appimage</destination>
+                                    <input>target</input>
+                                    <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
+                                    <mainClass>${main.class}</mainClass>
+                                    <type>APP_IMAGE</type>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Profile universal (Fat JAR com launcher) -->
+        <profile>
+            <id>universal</id>
+            <build>
+                <plugins>
+                    <!-- Maven Shade Plugin para uber JAR -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.4.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>${main.class}</mainClass>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                    </transformers>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <excludes>
+                                                <exclude>META-INF/*.SF</exclude>
+                                                <exclude>META-INF/*.DSA</exclude>
+                                                <exclude>META-INF/*.RSA</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <finalName>${app.name}-universal</finalName>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Plugin para criar scripts de execução -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>create-launchers</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>bash</executable>
+                                    <arguments>
+                                        <argument>-c</argument>
+                                        <argument>
+                                            mkdir -p target/universal-dist;
+                                            cp target/${app.name}-universal.jar target/universal-dist/;
+                                            echo '#!/bin/bash' > target/universal-dist/run.sh;
+                                            echo 'java -jar "$(dirname "$0")/${app.name}-universal.jar"' >> target/universal-dist/run.sh;
+                                            chmod +x target/universal-dist/run.sh;
+                                            echo '@echo off' > target/universal-dist/run.bat;
+                                            echo 'java -jar "%~dp0${app.name}-universal.jar"' >> target/universal-dist/run.bat;
+                                            echo 'pause' >> target/universal-dist/run.bat;
+                                        </argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Profile para desenvolvimento -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Plugin para executar diretamente -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <configuration>
+                            <mainClass>${main.class}</mainClass>
+                            <args>
+                                <arg>--module-path</arg>
+                                <arg>${javafx.runtime.path}</arg>
+                                <arg>--add-modules</arg>
+                                <arg>javafx.controls,javafx.fxml,javafx.media</arg>
+                            </args>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
