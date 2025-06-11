@@ -43,11 +43,13 @@ public class Controller {
 
         createButton.setOnAction(event -> {
             cardsGrid.getChildren().clear();
-            createCard(hostField.getText(), portField.getText());
+            createCard(hostField, portField, createButton);
         });
     }
 
-    private void createCard(String host, String port){
+    private void createCard(TextField hostField, TextField portField, Button createButton){
+        String host = hostField.getText();
+        String port = portField.getText();
         String hostPort = "rmi://" + host + ":" + port + "/";
         List<StationInfo> stations = new ArrayList<>();
 
@@ -75,8 +77,39 @@ public class Controller {
             }
         }catch (Exception e) {
             System.err.println("Erro ao listar objetos: " + e.getMessage());
+            loadErro(hostField,portField,createButton, hostPort);
             e.printStackTrace();
         }
+    }
+
+    private void loadErro(TextField hostField, TextField portField, Button createButton, String hostPort){
+        Label erroLabel = new Label("Erro de Conexão com o Servidor");
+        erroLabel.getStyleClass().add("station-title");
+
+        Label erroDescriptionLabel = new Label("Verifique se o servidor RMI está em execução e acessível no endereço "+ hostPort);
+        erroDescriptionLabel.getStyleClass().add("station-description");
+
+        Label buttonLabel = new Label("Voltar");
+        buttonLabel.getStyleClass().add("button-text");
+
+        HBox buttonBox = new HBox(10, buttonLabel);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        Button backButton = new Button();
+        backButton.setGraphic(buttonBox);
+
+        backButton.getStyleClass().add("hero-button");
+
+        backButton.setOnMouseClicked(event->{
+            VBox hostCard = createHostCard( hostField, portField, createButton);
+            cardsGrid.getChildren().clear();
+            cardsGrid.add(hostCard,0,0);
+        });
+
+        VBox cardErro = new VBox(15,erroLabel, erroDescriptionLabel, backButton);
+        cardErro.setAlignment(Pos.CENTER);
+        cardErro.getStyleClass().add("station-card");
+        cardsGrid.add(cardErro,0,0);
     }
 
     private void loadOptions(String host, String id, String port){

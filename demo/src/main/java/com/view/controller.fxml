@@ -29,8 +29,6 @@
         <HBox spacing="40" alignment="CENTER" VBox.vgrow="ALWAYS">
             
             <VBox spacing="25" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                <Label text="ESTAÇÕES DISPONÍVEIS" 
-                       style="-fx-font-size: 18px; -fx-font-weight: 700; -fx-text-fill: #00d2ff; -fx-letter-spacing: 1px;" />
                 
                 <GridPane hgap="20" vgap="20" alignment="CENTER" styleClass="stations-grid" fx:id="cardsGrid"> 
                     
