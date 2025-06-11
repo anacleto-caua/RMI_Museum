@@ -13,8 +13,6 @@ Sistema distribuído desenvolvido em JavaFX que permite controle remoto de repro
 - [Componentes Principais](#componentes-principais)
 - [Protocolo de Comunicação](#protocolo-de-comunicação)
 - [Funcionalidades](#funcionalidades)
-- [Troubleshooting](#troubleshooting)
-- [Contribuição](#contribuição)
 
 ## 🎯 Características
 
