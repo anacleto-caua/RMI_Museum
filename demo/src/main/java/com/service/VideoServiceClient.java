@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class VideoServiceClient {
     private String host,serviceName;
-    private int port;
+    private String port;
 
     public void initService(int ctrl) {
         String rmi = "rmi://" + host + ":" + port + "/" + serviceName;

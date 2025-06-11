@@ -63,7 +63,6 @@
         </resources>
         
         <plugins>
-            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -81,7 +80,6 @@
                 </configuration>
             </plugin>
             
-            <!-- JavaFX Maven Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -92,7 +90,6 @@
                 </configuration>
             </plugin>
             
-            <!-- Maven Assembly Plugin para Fat JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -120,7 +117,6 @@
                 </executions>
             </plugin>
             
-            <!-- Maven Dependency Plugin para copiar dependências -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -143,7 +139,6 @@
     </build>
     
     <profiles>
-        <!-- Profile para macOS -->
         <profile>
             <id>macos</id>
             <activation>
@@ -184,7 +179,6 @@
                         </executions>
                     </plugin>
                     
-                    <!-- Plugin adicional para criar .app também -->
                     <plugin>
                         <groupId>org.panteleyev</groupId>
                         <artifactId>jpackage-maven-plugin</artifactId>
@@ -215,7 +209,6 @@
             </build>
         </profile>
         
-        <!-- Profile para Windows -->
         <profile>
             <id>windows</id>
             <activation>
@@ -258,7 +251,6 @@
                         </executions>
                     </plugin>
                     
-                    <!-- Plugin adicional para criar MSI -->
                     <plugin>
                         <groupId>org.panteleyev</groupId>
                         <artifactId>jpackage-maven-plugin</artifactId>
@@ -291,7 +283,6 @@
             </build>
         </profile>
         
-        <!-- Profile para Linux -->
         <profile>
             <id>linux</id>
             <activation>
@@ -333,7 +324,6 @@
                         </executions>
                     </plugin>
                     
-                    <!-- Plugin adicional para criar RPM -->
                     <plugin>
                         <groupId>org.panteleyev</groupId>
                         <artifactId>jpackage-maven-plugin</artifactId>
@@ -361,7 +351,6 @@
                         </executions>
                     </plugin>
                     
-                    <!-- Plugin para AppImage -->
                     <plugin>
                         <groupId>org.panteleyev</groupId>
                         <artifactId>jpackage-maven-plugin</artifactId>
@@ -390,12 +379,10 @@
             </build>
         </profile>
         
-        <!-- Profile universal (Fat JAR com launcher) -->
         <profile>
             <id>universal</id>
             <build>
                 <plugins>
-                    <!-- Maven Shade Plugin para uber JAR -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
@@ -430,7 +417,6 @@
                         </executions>
                     </plugin>
                     
-                    <!-- Plugin para criar scripts de execução -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
@@ -465,7 +451,6 @@
             </build>
         </profile>
         
-        <!-- Profile para desenvolvimento -->
         <profile>
             <id>dev</id>
             <activation>
@@ -473,7 +458,6 @@
             </activation>
             <build>
                 <plugins>
-                    <!-- Plugin para executar diretamente -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>

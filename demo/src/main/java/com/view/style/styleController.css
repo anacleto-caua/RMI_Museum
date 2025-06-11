@@ -692,3 +692,38 @@
         -fx-spacing: 16px;
     }
 }
+
+.control-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.play-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.play-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.pause-button {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+}
+
+.pause-button:hover {
+    -fx-background-color: #e68900;
+}
+
+.restart-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.restart-button:hover {
+    -fx-background-color: #1976D2;
+}

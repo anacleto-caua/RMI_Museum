@@ -1,0 +1,229 @@
+package com.controller;
+
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+
+import java.rmi.Naming;
+import java.util.*;
+
+import com.service.VideoServiceClient;
+
+public class Controller {
+    @FXML
+    private GridPane cardsGrid;
+    @FXML
+    private VBox control;
+
+    public static class StationInfo {
+        String nameServe;
+        String host;
+        String port; 
+        String id;
+
+        public StationInfo(String id, String host, String port, String nameServe) {
+            this.nameServe = nameServe;
+            this.host = host;
+            this.port = port;
+            this.id = id;
+        }
+    }
+
+    @FXML
+    public void initialize() {
+        TextField hostField = new TextField();
+        TextField portField = new TextField();
+
+        Button createButton = new Button();
+
+        VBox hostCard = createHostCard( hostField, portField, createButton);
+
+        cardsGrid.add(hostCard,0,0);
+
+        createButton.setOnAction(event -> {
+            cardsGrid.getChildren().clear();
+            createCard(hostField.getText(), portField.getText());
+        });
+    }
+
+    private void createCard(String host, String port){
+        String hostPort = "rmi://" + host + ":" + port + "/";
+        List<StationInfo> stations = new ArrayList<>();
+
+        try{
+            String[] objetos = Naming.list(hostPort);
+            for (String obj : objetos) {
+                String id = obj.substring(obj.lastIndexOf("/") + 1);
+                stations.add(new StationInfo( id, host, port, "rmi:" + obj));
+            }
+
+            int col = 2;
+            for (int i = 0; i < stations.size(); i++) {
+                StationInfo est = stations.get(i);
+                VBox card = createCard(est);
+                card.setUserData(est); 
+
+                card.setOnMouseClicked(event -> {
+                    System.out.println(est.nameServe);
+                    loadOptions(est.host,est.id,est.port);
+                });
+
+                int colStations = i % col;
+                int rowStations = i / col;
+                cardsGrid.add(card, colStations, rowStations);
+            }
+        }catch (Exception e) {
+            System.err.println("Erro ao listar objetos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void loadOptions(String host, String id, String port){
+        control.getChildren().clear();
+        control.getChildren().add(createControlPanel(host, id, port));
+    }
+
+    private VBox createControlPanel(String host, String id, String port) {
+        Label controlHeader = new Label(id + " estação selecionada");
+        controlHeader.getStyleClass().add("control-header");
+        
+        Button playButton = new Button("▶ Play");
+        Button pauseButton = new Button("⏸ Pause");
+        Button restartButton = new Button("🔄 Restart");
+        
+        playButton.getStyleClass().addAll("control-button", "play-button");
+        pauseButton.getStyleClass().addAll("control-button", "pause-button");
+        restartButton.getStyleClass().addAll("control-button", "restart-button");
+        
+        playButton.setPrefWidth(120);
+        playButton.setPrefHeight(40);
+        pauseButton.setPrefWidth(120);
+        pauseButton.setPrefHeight(40);
+        restartButton.setPrefWidth(120);
+        restartButton.setPrefHeight(40);
+        
+        HBox buttonGroup = new HBox(10);
+        buttonGroup.setAlignment(Pos.CENTER);
+        buttonGroup.getChildren().addAll(playButton, pauseButton, restartButton);
+        
+        VideoServiceClient cliente = new VideoServiceClient(host, id, port);
+        playButton.setOnAction(event -> cliente.initService(1));
+        pauseButton.setOnAction(event -> cliente.initService(2));
+        restartButton.setOnAction(event -> cliente.initService(3));
+        
+        VBox actionsContainer = new VBox(15);
+        actionsContainer.setAlignment(Pos.CENTER);
+        actionsContainer.getChildren().add(buttonGroup);
+        
+        VBox controlPanel = new VBox(controlHeader, actionsContainer);
+        controlPanel.setAlignment(Pos.CENTER);
+        controlPanel.getStyleClass().add("control-panel");
+        
+        VBox wrapper = new VBox(controlPanel);
+        wrapper.setSpacing(0);
+        wrapper.setAlignment(Pos.TOP_CENTER);
+        wrapper.setPrefWidth(400);
+        HBox.setHgrow(wrapper, Priority.NEVER);
+        
+        return wrapper;
+    }
+
+    private VBox createHostCard(TextField hostField, TextField portField, Button createButton) {
+        VBox serviceBox = createHostField(hostField);
+        VBox portBox = createPortField(portField);
+        HBox fieldsLine = new HBox(24, serviceBox, portBox);
+        fieldsLine.setAlignment(Pos.CENTER);
+
+        VBox fieldsContainer = new VBox(32, fieldsLine);
+        fieldsContainer.getStyleClass().add("fields-container");
+
+        HBox actionZone = createActionZone(createButton);
+
+        VBox card = new VBox(40, fieldsContainer, actionZone);
+        card.setAlignment(Pos.CENTER);
+        card.setMaxWidth(650);
+        card.getStyleClass().add("modern-card");
+
+        return card;
+    }
+
+    private VBox createHostField(TextField hostField) {
+        Label hostLabel = new Label("Endereço Host");
+        hostLabel.getStyleClass().add("field-title");
+
+        hostField.setPromptText("localhost");
+        hostField.setText("localhost");
+        hostField.getStyleClass().add("modern-input");
+
+        Label hostTip = new Label("onde seu servidor vai rodar");
+        hostTip.getStyleClass().add("field-tip");
+
+        VBox hostBox = new VBox(12, new HBox(8, hostLabel), hostField, hostTip);
+        hostBox.setFillWidth(true);
+        HBox.setHgrow(hostBox, Priority.ALWAYS);
+        return hostBox;
+    }
+
+    private VBox createPortField(TextField portField) {
+        Label portLabel = new Label("Porta");
+        portLabel.getStyleClass().add("field-title");
+
+        portField.setPromptText("1099");
+        portField.setText("1099");
+        portField.getStyleClass().add("modern-input");
+
+        Label portTip = new Label("porta padrão é 1099");
+        portTip.getStyleClass().add("field-tip");
+
+        VBox portBox = new VBox(12, new HBox(8, portLabel), portField, portTip);
+        portBox.setFillWidth(true);
+        HBox.setHgrow(portBox, Priority.ALWAYS);
+
+        return portBox;
+    }
+
+    private HBox createActionZone(Button createButton) {
+        Label createLabel = new Label("Procurar Host");
+        createLabel.getStyleClass().add("button-text");
+
+        HBox createBox = new HBox(10, createLabel);
+        createBox.setAlignment(Pos.CENTER);
+
+        createButton.setGraphic(createBox);
+        createButton.getStyleClass().add("hero-button");
+
+        HBox actionZone = new HBox(20, createButton);
+        actionZone.setAlignment(Pos.CENTER);
+        actionZone.getStyleClass().add("action-zone");
+
+        return actionZone;
+    }
+
+    private VBox createCard(StationInfo est) {
+        Label idLabel = new Label(est.id);
+        idLabel.getStyleClass().add("station-title");
+
+        Label nameServe = new Label(est.nameServe);
+        nameServe.getStyleClass().add("station-description");
+
+        Pane dot = new Pane();
+        dot.setPrefSize(10, 10);
+
+        Label host = new Label(est.host);
+        host.getStyleClass().add("connection-text");
+
+        HBox hostBox = new HBox(6, dot, host);
+        hostBox.setAlignment(Pos.CENTER);
+
+        HBox hostHBox = new HBox(10, hostBox);
+        hostHBox.setAlignment(Pos.CENTER);
+
+        VBox card = new VBox(15,idLabel, nameServe, hostHBox);
+        card.setAlignment(Pos.CENTER);
+ 
+        card.getStyleClass().add("station-card");
+
+        return card;
+    }
+}
