@@ -18,7 +18,8 @@ public class VideoServiceImpl extends UnicastRemoteObject implements VideoServic
 
     private void playVideo(){
         Platform.runLater(() -> {
-            mediaPlayer.play();
+            if(mediaPlayer.getCurrentTime().equals(mediaPlayer.getTotalDuration())) restartVideo();
+            else mediaPlayer.play();
             System.out.println("Video started playing");
         });
     }
