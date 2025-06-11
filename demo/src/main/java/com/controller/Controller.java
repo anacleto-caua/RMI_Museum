@@ -1,5 +1,7 @@
 package com.controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -47,40 +49,70 @@ public class Controller {
         });
     }
 
-    private void createCard(TextField hostField, TextField portField, Button createButton){
-        String host = hostField.getText();
-        String port = portField.getText();
-        String hostPort = "rmi://" + host + ":" + port + "/";
+private void createCard(TextField hostField, TextField portField, Button createButton){
+    String host = hostField.getText();
+    String port = portField.getText();
+    String hostPort = "rmi://" + host + ":" + port + "/";
+    Task<Void> task = new Task<>() {
+        @Override
+        protected Void call() {
+            int numberObjetos = 0;
+
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                    String[] objetos = Naming.list(hostPort);
+                    if (numberObjetos != objetos.length) {
+                        int finalNumberObjetos = objetos.length;
+
+                        Platform.runLater(() -> {
+                            cardsGrid.getChildren().clear();
+                            if (finalNumberObjetos == 0) loadErro(hostField, portField, createButton, hostPort);
+                            else loadCard(objetos, host, port);
+                        });
+                        numberObjetos = finalNumberObjetos;
+                    }
+
+                } catch (Exception e) {
+                    if (numberObjetos == 0) {
+                        Platform.runLater(() -> loadErro(hostField, portField, createButton, hostPort));
+                        numberObjetos = -1;
+                    }
+                    System.out.println("Erro: " + e.getMessage());
+                }
+            }
+        }
+    };
+
+    Thread thread = new Thread(task);
+    thread.setDaemon(true); 
+    thread.start();
+}
+
+    private void loadCard(String[] objetos, String host, String port){
         List<StationInfo> stations = new ArrayList<>();
+        for (String obj : objetos) {
+            String id = obj.substring(obj.lastIndexOf("/") + 1);
+            stations.add(new StationInfo( id, host, port, "rmi:" + obj));
+        }
 
-        try{
-            String[] objetos = Naming.list(hostPort);
-            for (String obj : objetos) {
-                String id = obj.substring(obj.lastIndexOf("/") + 1);
-                stations.add(new StationInfo( id, host, port, "rmi:" + obj));
-            }
+        int col = 2;
+        for (int i = 0; i < stations.size(); i++) {
+            StationInfo est = stations.get(i);
+            VBox card = createCard(est);
+            card.setUserData(est); 
 
-            int col = 2;
-            for (int i = 0; i < stations.size(); i++) {
-                StationInfo est = stations.get(i);
-                VBox card = createCard(est);
-                card.setUserData(est); 
+            card.setOnMouseClicked(event -> {
+                System.out.println(est.nameServe);
+                loadOptions(est.host,est.id,est.port);
+            });
 
-                card.setOnMouseClicked(event -> {
-                    System.out.println(est.nameServe);
-                    loadOptions(est.host,est.id,est.port);
-                });
-
-                int colStations = i % col;
-                int rowStations = i / col;
-                cardsGrid.add(card, colStations, rowStations);
-            }
-        }catch (Exception e) {
-            System.err.println("Erro ao listar objetos: " + e.getMessage());
-            loadErro(hostField,portField,createButton, hostPort);
-            e.printStackTrace();
+            int colStations = i % col;
+            int rowStations = i / col;
+            cardsGrid.add(card, colStations, rowStations);
         }
     }
+
 
     private void loadErro(TextField hostField, TextField portField, Button createButton, String hostPort){
         Label erroLabel = new Label("Erro de Conexão com o Servidor");

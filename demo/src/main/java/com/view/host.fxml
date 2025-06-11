@@ -77,13 +77,6 @@
                         </graphic>
                     </Button>
                     
-                    <Button fx:id="clearButton" mnemonicParsing="false" styleClass="ghost-button">
-                        <graphic>
-                            <HBox alignment="CENTER" spacing="8">
-                                <Label styleClass="button-text-secondary" text="Limpar Tudo" />
-                            </HBox>
-                        </graphic>
-                    </Button>
                 </HBox>
                 
                 <VBox alignment="CENTER" spacing="16" styleClass="status-zone">
