@@ -30,4 +30,14 @@ public class VideoServiceHost {
             e.printStackTrace();
         }
     }
+
+    public void closeHost(){
+        try{
+            String rmi = "rmi://" + host + ":" + port + "/" + service;
+            Naming.unbind(rmi);
+        }catch (Exception e) {
+            System.err.println("Failed to close service host: " + e.toString());
+            e.printStackTrace();
+        }
+    }
 }

@@ -103,7 +103,6 @@ private void createCard(TextField hostField, TextField portField, Button createB
             card.setUserData(est); 
 
             card.setOnMouseClicked(event -> {
-                System.out.println(est.nameServe);
                 loadOptions(est.host,est.id,est.port);
             });
 
