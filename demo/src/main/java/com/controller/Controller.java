@@ -12,25 +12,13 @@ import java.util.*;
 
 import com.service.VideoServiceClient;
 
+import com.model.StationInfo;
+
 public class Controller {
     @FXML
     private GridPane cardsGrid;
     @FXML
     private VBox control;
-
-    public static class StationInfo {
-        String nameServe;
-        String host;
-        String port; 
-        String id;
-
-        public StationInfo(String id, String host, String port, String nameServe) {
-            this.nameServe = nameServe;
-            this.host = host;
-            this.port = port;
-            this.id = id;
-        }
-    }
 
     @FXML
     public void initialize() {
@@ -49,67 +37,75 @@ public class Controller {
         });
     }
 
-private void createCard(TextField hostField, TextField portField, Button createButton){
-    String host = hostField.getText();
-    String port = portField.getText();
-    String hostPort = "rmi://" + host + ":" + port + "/";
-    Task<Void> task = new Task<>() {
-        @Override
-        protected Void call() {
-            int numberObjetos = 0;
+    private void createCard(TextField hostField, TextField portField, Button createButton){
+        String host = hostField.getText();
+        String port = portField.getText();
+        String hostPort = "rmi://" + host + ":" + port + "/";
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                int numberObjetos = 0;
 
-            while (true) {
-                try {
-                    Thread.sleep(100);
-                    String[] objetos = Naming.list(hostPort);
-                    if (numberObjetos != objetos.length) {
-                        int finalNumberObjetos = objetos.length;
+                while (true) {
+                    try {
+                        Thread.sleep(100);
+                        String[] objetos = Naming.list(hostPort);
+                        if (numberObjetos != objetos.length) {
+                            int finalNumberObjetos = objetos.length;
 
-                        Platform.runLater(() -> {
-                            cardsGrid.getChildren().clear();
-                            if (finalNumberObjetos == 0) loadErro(hostField, portField, createButton, hostPort);
-                            else loadCard(objetos, host, port);
-                        });
-                        numberObjetos = finalNumberObjetos;
+                            Platform.runLater(() -> {
+                                cardsGrid.getChildren().clear();
+                                if (finalNumberObjetos == 0) loadErro(hostField, portField, createButton, hostPort);
+                                else loadCard(objetos, host, port);
+                            });
+                            numberObjetos = finalNumberObjetos;
+                        }
+                    } catch (Exception e) {
+                        if(numberObjetos == 0){
+                            Platform.runLater(() -> loadErro(hostField, portField, createButton, hostPort));
+                            numberObjetos = -1;
+                        }
+                        System.out.println("Erro: " + e.getMessage());
                     }
-
-                } catch (Exception e) {
-                    if (numberObjetos == 0) {
-                        Platform.runLater(() -> loadErro(hostField, portField, createButton, hostPort));
-                        numberObjetos = -1;
-                    }
-                    System.out.println("Erro: " + e.getMessage());
                 }
             }
-        }
-    };
+        };
 
-    Thread thread = new Thread(task);
-    thread.setDaemon(true); 
-    thread.start();
-}
+        Thread thread = new Thread(task);
+        thread.setDaemon(true); 
+        thread.start();
+    }
 
     private void loadCard(String[] objetos, String host, String port){
+        List<StationInfo> stations = loadStations(objetos, host, port);
+
+        int col = 2;
+        for (int i = 0; i < stations.size(); i++) {
+            loadCard(stations.get(i),col, i);
+        }
+    }
+
+    private List<StationInfo> loadStations(String[] objetos, String host, String port){
         List<StationInfo> stations = new ArrayList<>();
         for (String obj : objetos) {
             String id = obj.substring(obj.lastIndexOf("/") + 1);
             stations.add(new StationInfo( id, host, port, "rmi:" + obj));
         }
 
-        int col = 2;
-        for (int i = 0; i < stations.size(); i++) {
-            StationInfo est = stations.get(i);
+        return stations;
+    }
+
+    private void loadCard(StationInfo est,int col, int i){
             VBox card = createCard(est);
             card.setUserData(est); 
 
             card.setOnMouseClicked(event -> {
-                loadOptions(est.host,est.id,est.port);
+                loadOptions(est.getHost(),est.getId(),est.getPort());
             });
 
             int colStations = i % col;
             int rowStations = i / col;
             cardsGrid.add(card, colStations, rowStations);
-        }
     }
 
 
@@ -265,16 +261,16 @@ private void createCard(TextField hostField, TextField portField, Button createB
     }
 
     private VBox createCard(StationInfo est) {
-        Label idLabel = new Label(est.id);
+        Label idLabel = new Label(est.getId());
         idLabel.getStyleClass().add("station-title");
 
-        Label nameServe = new Label(est.nameServe);
+        Label nameServe = new Label(est.getNameServe());
         nameServe.getStyleClass().add("station-description");
 
         Pane dot = new Pane();
         dot.setPrefSize(10, 10);
 
-        Label host = new Label(est.host);
+        Label host = new Label(est.getHost());
         host.getStyleClass().add("connection-text");
 
         HBox hostBox = new HBox(6, dot, host);
