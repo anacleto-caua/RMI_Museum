@@ -66,8 +66,17 @@
                             <Label styleClass="field-tip" text="porta padrão é 1099" />
                         </VBox>
                     </HBox>
+
+                    <VBox spacing="12" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label styleClass="field-title" text="Vídeo Inicial" />
+                        </HBox>
+                        <ComboBox fx:id="videoComboBox" promptText="Selecione o vídeo" styleClass="modern-combo-box" />
+                        <Label styleClass="field-tip" text="escolha um vídeo para exibir inicialmente" />
+                    </VBox>
+
                 </VBox>
-                
+
                 <HBox alignment="CENTER" spacing="20" styleClass="action-zone">
                     <Button fx:id="createButton" mnemonicParsing="false" styleClass="hero-button" onAction="#createHost" >
                         <graphic>

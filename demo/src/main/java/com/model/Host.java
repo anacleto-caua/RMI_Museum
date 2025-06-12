@@ -6,5 +6,5 @@ import lombok.*;
 @AllArgsConstructor
 public class Host {
     private String name, host, service;
-    private int port;
+    private int port,indiceVideo;
 }

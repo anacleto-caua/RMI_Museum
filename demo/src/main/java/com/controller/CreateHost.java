@@ -8,11 +8,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.media.*;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.Node;
 
 
@@ -27,7 +27,31 @@ public class CreateHost {
     @FXML private TextField portField;
     @FXML private VBox vboxContainer;
     @FXML private MediaView mediaView;   
+    @FXML private ComboBox<String> videoComboBox;
     private VideoServiceHost serviceVideo; 
+    private int indiceVideo = 0;
+
+    @FXML
+    public void initialize() {
+        loadComboBox();
+    }
+
+    private void loadComboBox(){
+        File folder = new File("src/main/resources/video");
+        File[] files = folder.listFiles();
+
+        videoComboBox.getStyleClass().setAll("modern-combo-box");
+
+        for (File file : files) {
+            videoComboBox.getItems().add(file.getName());
+        }
+
+        videoComboBox.getSelectionModel().selectFirst();
+        indiceVideo = videoComboBox.getSelectionModel().getSelectedIndex(); 
+
+        
+        videoComboBox.valueProperty().addListener((obs, oldVal, newVal) -> indiceVideo = videoComboBox.getSelectionModel().getSelectedIndex());
+    }
 
     public void init(Stage stage) {
         stage.setOnCloseRequest(event->  {
@@ -47,15 +71,37 @@ public class CreateHost {
         try{
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             init(stage);
-            Host host = new Host(nameField.getText().trim(), hostField.getText().trim(), serviceField.getText().trim(), Integer.parseInt(portField.getText().trim()));
-            if(checkID(host)) initHost(host);
-            else loadErro(host.getService());
+            Host host = new Host(nameField.getText().trim(), hostField.getText().trim(), serviceField.getText().trim(), Integer.parseInt(portField.getText().trim()),indiceVideo);
+            if(!checkFields(host)) loadErroFields();
+            else if(checkID(host)) initHost(host);
+            else loadErroID(host.getService());
         } catch (NumberFormatException e) {
             System.out.println("Erro"+ "A porta deve ser um número válido.");
         } catch (Exception e) {
             System.out.println("Erro"+ "Erro ao criar host: " + e.getMessage());
         }
     }
+
+    private boolean checkFields(Host host) {
+        if (host.getHost() == null || host.getHost().isEmpty()) return false;
+        if (host.getName() == null || host.getName().isEmpty()) return false;
+        if (host.getService() == null || host.getService().isEmpty()) return false;
+        if (host.getPort() <= 0) return false;
+        return true;
+    }
+
+    private void loadErroFields(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Campos inválidos");
+        alert.setHeaderText("Preencha todos os campos corretamente");
+        alert.setContentText("Verifique se todos os campos foram preenchidos e se a porta é válida.");
+
+        alert.getDialogPane().getStyleClass().add("modern-card");
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/erro.css").toExternalForm());
+
+        alert.showAndWait();
+    }
+
 
     private void initHost(Host host){
         try {
@@ -84,7 +130,7 @@ public class CreateHost {
         return true;
     }
 
-    private void loadErro(String id){
+    private void loadErroID(String id){
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erro de Registro");
         alert.setHeaderText("ID já registrado");
@@ -102,10 +148,13 @@ public class CreateHost {
         serviceVideo.startHost();
     }
 
-    private void initViewVideo(){
+    private void initViewVideo() {
         vboxContainer.getChildren().clear();
-        File videoFile = new File("src/main/resources/video.mp4");
 
+        File folder = new File("src/main/resources/video");
+        File[] files = folder.listFiles();
+
+        File videoFile = files[indiceVideo];
         String videoUri = videoFile.toURI().toString();
         Media media = new Media(videoUri);
         MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -117,4 +166,5 @@ public class CreateHost {
 
         vboxContainer.getChildren().add(mediaView);
     }
+
 }

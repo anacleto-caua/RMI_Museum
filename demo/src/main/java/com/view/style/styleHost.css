@@ -360,29 +360,354 @@
     }
 }
 
-.field-emoji:hover {
-    -fx-scale-x: 1.2;
-    -fx-scale-y: 1.2;
-    -fx-rotate: 10;
+/* ComboBox Principal */
+.modern-combo-box {
+    -fx-background-color: #3a3a3f;
+    -fx-border-color: #5a5a5f;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 0 16px 0 16px;
+    -fx-font-size: 15px;
+    -fx-pref-height: 52px;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #9ca3af;
+    -fx-font-weight: 500;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #000000, 8, 0.15, 0, 2);
 }
 
-.status-emoji {
-    -fx-rotate: 5;
+/* Estado Focado */
+.modern-combo-box:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-border-width: 2px;
+    -fx-background-color: #4c3f76;
+    -fx-effect: dropshadow(gaussian, #8b5cf6, 16, 0.4, 0, 0);
 }
 
-.hero-button:disabled {
-    -fx-background-color: #3f3f46;
-    -fx-effect: none;
+/* Estado Hover */
+.modern-combo-box:hover {
+    -fx-border-color: #6b6b70;
+    -fx-background-color: #444449;
+    -fx-effect: dropshadow(gaussian, #000000, 10, 0.2, 0, 3);
+}
+
+/* Estado Desabilitado */
+.modern-combo-box:disabled {
+    -fx-background-color: #2a2a2e;
+    -fx-border-color: #404045;
+    -fx-text-fill: #6b7280;
     -fx-opacity: 0.6;
+    -fx-cursor: default;
 }
 
-.ghost-button:disabled {
-    -fx-border-color: rgba(255, 255, 255, 0.1);
-    -fx-opacity: 0.5;
+/* Botão da Seta */
+.modern-combo-box .arrow-button {
+    -fx-background-color: #3a3a3f;
+    -fx-border-color: #3a3a3f;
+    -fx-padding: 0 12px 0 8px;
+    -fx-cursor: hand;
+    -fx-background-radius: 0 12px 12px 0;
 }
 
-.modern-input:disabled {
-    -fx-background-color: rgba(255, 255, 255, 0.02);
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-text-fill: #52525b;
+.modern-combo-box:focused .arrow-button {
+    -fx-background-color: #4c3f76;
+}
+
+.modern-combo-box:hover .arrow-button {
+    -fx-background-color: #505055;
+    -fx-background-radius: 0 12px 12px 0;
+}
+
+/* Ícone da Seta */
+.modern-combo-box .arrow-button .arrow {
+    -fx-background-color: #d1d5db;
+    -fx-shape: "M7 10l5 5 5-5z";
+    -fx-scale-shape: true;
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+}
+
+.modern-combo-box:hover .arrow-button .arrow {
+    -fx-background-color: #f3f4f6;
+}
+
+.modern-combo-box:focused .arrow-button .arrow {
+    -fx-background-color: #c4b5fd;
+}
+
+.modern-combo-box:disabled .arrow-button .arrow {
+    -fx-background-color: #6b7280;
+}
+
+/* Célula de Texto do ComboBox */
+.modern-combo-box .list-cell {
+    -fx-background-color: #3a3a3f;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 0;
+    -fx-font-size: 15px;
+    -fx-text-fill: #ffffff;
+}
+
+.modern-combo-box .list-cell:empty {
+    -fx-background-color: #3a3a3f;
+}
+
+/* Popup ListView */
+.modern-combo-box-popup .list-view {
+    -fx-background-color: #2d2d32;
+    -fx-border-color: #5a5a5f;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.3, 0, 8);
+    -fx-padding: 4px;
+}
+
+/* Células do Popup */
+.modern-combo-box-popup .list-cell {
+    -fx-background-color: #2d2d32;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px 16px;
+    -fx-font-size: 15px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 400;
+}
+
+.modern-combo-box-popup .list-cell:hover {
+    -fx-background-color: #4c3f76;
+    -fx-text-fill: #ffffff;
+}
+
+.modern-combo-box-popup .list-cell:selected {
+    -fx-background-color: #8b5cf6;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 500;
+}
+
+.modern-combo-box-popup .list-cell:selected:hover {
+    -fx-background-color: #7c3aed;
+}
+
+/* Scroll Bar do Popup */
+.modern-combo-box-popup .list-view .scroll-bar:vertical {
+    -fx-background-color: #2d2d32;
+    -fx-padding: 0 2px 0 0;
+    -fx-pref-width: 10px;
+}
+
+.modern-combo-box-popup .list-view .scroll-bar:vertical .track {
+    -fx-background-color: #404045;
+    -fx-background-radius: 5px;
+}
+
+.modern-combo-box-popup .list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #6b6b70;
+    -fx-background-radius: 5px;
+}
+
+.modern-combo-box-popup .list-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #8b8b90;
+}
+
+.modern-combo-box-popup .list-view .scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: #8b5cf6;
+}
+
+/* Remover botões da scroll bar */
+.modern-combo-box-popup .list-view .scroll-bar .increment-button,
+.modern-combo-box-popup .list-view .scroll-bar .decrement-button {
+    -fx-background-color: #2d2d32;
+    -fx-border-color: #2d2d32;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+
+.modern-combo-box-popup .list-view .scroll-bar .increment-arrow,
+.modern-combo-box-popup .list-view .scroll-bar .decrement-arrow {
+    -fx-background-color: #2d2d32;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+}
+
+/* Variante Compacta */
+.modern-combo-box.compact {
+    -fx-pref-height: 40px;
+    -fx-font-size: 14px;
+    -fx-padding: 0 12px 0 12px;
+}
+
+.modern-combo-box.compact .arrow-button {
+    -fx-padding: 0 8px 0 4px;
+}
+
+.modern-combo-box.compact .arrow-button .arrow {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Tema Claro */
+.modern-combo-box.light {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #d1d5db;
+    -fx-text-fill: #1f2937;
+    -fx-prompt-text-fill: #6b7280;
+}
+
+.modern-combo-box.light:hover {
+    -fx-border-color: #9ca3af;
+    -fx-background-color: #ffffff;
+}
+
+.modern-combo-box.light:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-background-color: #faf5ff;
+}
+
+.modern-combo-box.light .arrow-button {
+    -fx-background-color: #f8fafc;
+}
+
+.modern-combo-box.light:hover .arrow-button {
+    -fx-background-color: #ffffff;
+}
+
+.modern-combo-box.light:focused .arrow-button {
+    -fx-background-color: #faf5ff;
+}
+
+.modern-combo-box.light .arrow-button .arrow {
+    -fx-background-color: #6b7280;
+}
+
+.modern-combo-box.light:hover .arrow-button .arrow {
+    -fx-background-color: #374151;
+}
+
+.modern-combo-box.light:focused .arrow-button .arrow {
+    -fx-background-color: #8b5cf6;
+}
+
+.modern-combo-box.light .list-cell {
+    -fx-background-color: #f8fafc;
+    -fx-text-fill: #1f2937;
+}
+
+/* Popup tema claro */
+.modern-combo-box.light .list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+}
+
+.modern-combo-box.light .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1f2937;
+}
+
+.modern-combo-box.light .list-cell:hover {
+    -fx-background-color: #f3f0ff;
+}
+
+.modern-combo-box.light .scroll-bar:vertical {
+    -fx-background-color: #ffffff;
+}
+
+.modern-combo-box.light .scroll-bar:vertical .track {
+    -fx-background-color: #f3f4f6;
+}
+
+.modern-combo-box.light .scroll-bar:vertical .thumb {
+    -fx-background-color: #d1d5db;
+}
+
+.modern-combo-box.light .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #9ca3af;
+}
+
+/* Estado de erro */
+.modern-combo-box.error {
+    -fx-border-color: #ef4444;
+    -fx-background-color: #4f2b2b;
+}
+
+.modern-combo-box.error:focused {
+    -fx-border-color: #dc2626;
+    -fx-background-color: #5f3131;
+    -fx-effect: dropshadow(gaussian, #ef4444, 16, 0.4, 0, 0);
+}
+
+.modern-combo-box.error .arrow-button {
+    -fx-background-color: #4f2b2b;
+}
+
+.modern-combo-box.error:focused .arrow-button {
+    -fx-background-color: #5f3131;
+}
+
+/* Estado de sucesso */
+.modern-combo-box.success {
+    -fx-border-color: #10b981;
+    -fx-background-color: #2b4f3f;
+}
+
+.modern-combo-box.success:focused {
+    -fx-border-color: #059669;
+    -fx-background-color: #315f4a;
+    -fx-effect: dropshadow(gaussian, #10b981, 16, 0.4, 0, 0);
+}
+
+.modern-combo-box.success .arrow-button {
+    -fx-background-color: #2b4f3f;
+}
+
+.modern-combo-box.success:focused .arrow-button {
+    -fx-background-color: #315f4a;
+}
+
+/* Tema Escuro Intenso */
+.modern-combo-box.dark {
+    -fx-background-color: #1f1f23;
+    -fx-border-color: #404045;
+    -fx-text-fill: #e5e7eb;
+}
+
+.modern-combo-box.dark:hover {
+    -fx-background-color: #2a2a2e;
+    -fx-border-color: #5a5a5f;
+}
+
+.modern-combo-box.dark:focused {
+    -fx-background-color: #3d2f5c;
+}
+
+.modern-combo-box.dark .arrow-button {
+    -fx-background-color: #1f1f23;
+}
+
+.modern-combo-box.dark:hover .arrow-button {
+    -fx-background-color: #2a2a2e;
+}
+
+.modern-combo-box.dark:focused .arrow-button {
+    -fx-background-color: #3d2f5c;
+}
+
+.modern-combo-box.dark .list-cell {
+    -fx-background-color: #1f1f23;
+    -fx-text-fill: #e5e7eb;
+}
+
+.modern-combo-box.dark .list-view {
+    -fx-background-color: #18181b;
+    -fx-border-color: #404045;
+}
+
+.modern-combo-box.dark .list-cell {
+    -fx-background-color: #18181b;
+}
+
+.modern-combo-box.dark .list-cell:hover {
+    -fx-background-color: #3d2f5c;
 }
